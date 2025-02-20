@@ -1,0 +1,25 @@
+
+1:25
+1:52 -1:53
+1:57
+2:12 -2:14
+2:22
+
+
+3:24 error
+
+
+side circle button not coming
+that picture
+otp sent to mail
+verify email sent to mail
+
+
+
+login
+signup
+store in database
+validate if acc there
+otp to mail
+verification to mail
+reset password
