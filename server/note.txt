@@ -1,0 +1,28 @@
+that picture
+color combination with subi
+
+//done//
+text to text
+auth
+audio to audio
+
+//to do//
+train text to text integrate in UI
+
+//after mid//
+history
+response 
+
+
+login
+signup
+store in database
+validate if acc there
+
+otp to mail
+verification to mail
+reset password
+google auth
+
+
+436612768389-vn6l6pl2tktorusnut3bdhtvt66mgiio.apps.googleusercontent.com

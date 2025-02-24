@@ -52,7 +52,7 @@ export const login = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-        return res.join({ success: false, message: 'Email and password are required' })
+        return res.json({ success: false, message: 'Email and password are required' })
     }
 
     try {
@@ -108,6 +108,9 @@ export const sendVerifyOtp = async (req, res) => {
 
         const user = await userModel.findById(userID);
 
+        if (!user) {
+            return res.json({ success: false, message: "User not found" });
+        }
         if (user.isAccountVerified) {
             return res.json({ success: false, message: "Account Already Verified" })
         }
@@ -149,7 +152,7 @@ export const verifyEmail = async (req, res) => {
             return res.json({ success: false, message: 'User not found' });
         }
 
-        if (user.verifyOtp === '' || user.verifyOTP !== otp) {
+        if (user.verifyOtp === '' || user.verifyOtp !== otp) {
             return res.json({ success: false, message: 'Invalid OTP' });
         }
 

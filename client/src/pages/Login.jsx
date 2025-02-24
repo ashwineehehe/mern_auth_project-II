@@ -4,8 +4,15 @@ import { useNavigate } from 'react-router-dom'
 import { AppContent } from '../context/AppContext'
 import axios from 'axios'
 import { toast, ToastContainer } from 'react-toastify'
+import { GoogleLogin } from '@react-oauth/google';
 
 const Login = () => {
+  const responseMessage = (response) => {
+    console.log(response);
+};
+const errorMessage = (error) => {
+    console.log(error);
+};
 
     const navigate = useNavigate()
 
@@ -23,13 +30,17 @@ const Login = () => {
         axios.defaults.withCredentials= true
 
         if(state === 'Sign Up'){
+          console.log(backendUrl + '/api/auth/register')
+          console.log({name,email, password})
           const {data} = await axios.post(backendUrl + '/api/auth/register',
              {name,email,password})
 
              if(data.success){
+              // console.log(data)
               setIsLoggedin(true)
               getUserData()
               navigate('/')
+              toast.success("Logged in successfully...")
              }else{
               toast.error(data.message)
              }
@@ -88,6 +99,11 @@ const Login = () => {
             <p onClick= {()=>navigate('/reset-password')} className='mb-4 text-yellow-500 cursor-pointer'>Forgot Password</p>
 
             <button className='w-full py-2.5 rounded-full bg-gradient-to-r from-yellow-500 to-yellow-900 text-white font-medium'>{state}</button>
+
+            <div className="flex justify-center my-5">
+
+          <GoogleLogin onSuccess={responseMessage} onError={errorMessage} />
+          </div>
         </form>
 
         
@@ -97,7 +113,9 @@ const Login = () => {
           <span onClick={()=> setState('Login')} className='text-yellow-400 cursor-pointer underline'>
             Login here</span>
         </p>
+        
       ) 
+      
       : (
       <p className='text-gray-400 text-center text-xs mt-4'>
           Don't have an account? {' '}
@@ -108,9 +126,11 @@ const Login = () => {
       )}
         
         
-      </div>
+
+</div>
     </div>
   )
 }
-
 export default Login
+
+

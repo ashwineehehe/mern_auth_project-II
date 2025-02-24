@@ -14,7 +14,7 @@ const Header = () => {
       font-medium md-2'>Hello {userData ? userData.name : 'User'}! <img className='w-8 aspect-square' 
       src={assets.hand_wave} alt=''/></h1>
 
-      <h2 className='text-3xl sm:text-5xl font-semibold mb-4'>Welcome to the Translation app</h2>
+      <h2 className='text-3xl sm:text-5xl font-semibold mb-4'>Welcome to Language Translator</h2>
       <p className='mb-8 max-w-md'>Translate to different languages and get response for your questions </p>
 
       <button className='border border-gray-500 rounded-full px-8 py-2.5 hover:bg-gray-100 transition-all'>Get Started</button>

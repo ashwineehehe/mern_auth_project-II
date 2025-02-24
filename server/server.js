@@ -5,9 +5,9 @@ import cookieParser from "cookie-parser";
 import connectDB from './config/mongodb.js'
 import authRouter from './routes/authRoutes.js'
 
-import { config } from "dotenv"; //added
+import dotenv from "dotenv"; //added
 import userRouter from "./routes/userRoutes.js";
-config() //added
+dotenv.config(); //added
 
 const app= express();
 const port= process.env.PORT || 4000
