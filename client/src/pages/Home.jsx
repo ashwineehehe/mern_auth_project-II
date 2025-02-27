@@ -39,7 +39,7 @@ const Home = () => {
       <Navbar />
       <Header />
 
-      <div>
+      {/* <div>
         <h2>React Google Login</h2>
         <br />
         <br />
@@ -56,7 +56,7 @@ const Home = () => {
         ) : (
           <button onClick={() => login()}>Sign in with Google 🚀 </button>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };

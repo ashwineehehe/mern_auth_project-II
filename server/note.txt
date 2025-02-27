@@ -8,6 +8,8 @@ audio to audio
 
 //to do//
 train text to text integrate in UI
+nepali try
+join both
 
 //after mid//
 history
@@ -21,6 +23,7 @@ validate if acc there
 
 otp to mail
 verification to mail
+
 reset password
 google auth
 
