@@ -2,6 +2,8 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import userModel from "../models/userModel.js";
 import transporter from "../config/nodemailer.js";
+import { OAuth2Client } from "google-auth-library";
+const client = new OAuth2Client(process.env.GOOGLECREDENTIAL);
 import {
   EMAIL_VERIFY_TEMPLATE,
   PASSWORD_RESET_TEMPLATE,
@@ -121,9 +123,10 @@ export const sendVerifyOtp = async (req, res) => {
     const otp = String(Math.floor(10000 + Math.random() * 900000));
 
     user.verifyOtp = otp;
+    console.log(user.verifyOtp);
     user.verifyOtpExpireAt = Date.now() + 24 * 60 * 60 * 1000;
 
-    await user.save();
+    console.log(await user.save());
 
     const mailOption = {
       from: process.env.SENDER_EMAIL,
@@ -152,12 +155,13 @@ export const verifyEmail = async (req, res) => {
   }
   try {
     const user = await userModel.findById(userId);
+    const userOtp = Number(user.verifyOtp);
+    console.log("userotp from db", userOtp);
 
     if (!user) {
       return res.json({ success: false, message: "User not found" });
     }
-    console.log("users otp", user.verifyOtp);
-    if (user.verifyOtp === "" || user.verifyOtp !== otp) {
+    if (userOtp == "" || userOtp !== Number(otp)) {
       return res.json({ success: false, message: "Invalid OTP" });
     }
 
@@ -166,9 +170,8 @@ export const verifyEmail = async (req, res) => {
     }
 
     user.isAccountVerified = true;
-    user.verifyOtp = "";
     user.verifyOtpExpireAt = 0;
-
+    console.log(user);
     await user.save();
 
     return res.json({ success: true, message: "Email verifies successfully" });
@@ -270,3 +273,56 @@ export const resetPassword = async (req, res) => {
     return res.json({ success: false, message: error.message });
   }
 };
+
+
+export const googlelogin = async (req, res) => {
+  const { token } = req.body;
+
+  if (!token) {
+    return res.json({ success: false, message: "Token is required" });
+  }
+
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    const { name, email, sub: googleId } = payload;
+
+    let user = await userModel.findOne({ email });
+
+    if (!user) {
+      user = new userModel({
+        name,
+        email,
+        googleId,
+        isAccountVerified: true, // Since Google verified the user
+      });
+
+      await user.save();
+    }
+
+    const authToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
+
+    res.cookie("token", authToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    return res.json({ success: true, authToken });
+  } catch (error) {
+    return res.json({
+      success: false,
+      message: "Google authentication failed",
+      error: error.message,
+    });
+  }
+};
+
+

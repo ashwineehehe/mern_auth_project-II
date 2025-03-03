@@ -7,25 +7,27 @@ auth
 audio to audio
 
 //to do//
-train text to text integrate in UI
-nepali try
+train text to text 
+integrate in UI
+response 
+
 join both
+UI
 
 //after mid//
 history
-response 
+nepali
 
 
 login
 signup
 store in database
 validate if acc there
-
 otp to mail
 verification to mail
-
 reset password
-google auth
+
+google auth navigate to other page
 
 
 436612768389-vn6l6pl2tktorusnut3bdhtvt66mgiio.apps.googleusercontent.com
